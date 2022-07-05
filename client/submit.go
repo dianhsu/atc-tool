@@ -16,7 +16,7 @@ func findErrorMessage(body []byte) (string, error) {
 	reg := regexp.MustCompile(`error[a-zA-Z_\-\ ]*">(.*?)</span>`)
 	tmp := reg.FindSubmatch(body)
 	if tmp == nil {
-		return "", errors.New("Cannot find error")
+		return "", errors.New("cannot find error")
 	}
 	return string(tmp[1]), nil
 }

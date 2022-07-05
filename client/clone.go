@@ -38,7 +38,7 @@ func (c *Client) Clone(handle, rootPath string, ac bool) (err error) {
 	}
 
 	if status, ok := data["status"].(string); !ok || status != "OK" {
-		return fmt.Errorf("Cannot get any submission")
+		return fmt.Errorf("cannot get any submission")
 	}
 	submissions := data["result"].([]interface{})
 	total := len(submissions)

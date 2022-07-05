@@ -26,25 +26,25 @@ type Info struct {
 }
 
 // ErrorNeedProblemID error
-const ErrorNeedProblemID = "You have to specify the Problem ID"
+const ErrorNeedProblemID = "you have to specify the Problem ID"
 
 // ErrorNeedContestID error
-const ErrorNeedContestID = "You have to specify the Contest ID"
+const ErrorNeedContestID = "you have to specify the Contest ID"
 
 // ErrorNeedGymID error
-const ErrorNeedGymID = "You have to specify the Gym ID"
+const ErrorNeedGymID = "you have to specify the Gym ID"
 
 // ErrorNeedGroupID error
-const ErrorNeedGroupID = "You have to specify the Group ID"
+const ErrorNeedGroupID = "you have to specify the Group ID"
 
 // ErrorNeedSubmissionID error
-const ErrorNeedSubmissionID = "You have to specify the Submission ID"
+const ErrorNeedSubmissionID = "you have to specify the Submission ID"
 
 // ErrorUnknownType error
-const ErrorUnknownType = "Unknown Type"
+const ErrorUnknownType = "unknown Type"
 
 // ErrorNotSupportAcmsguru error
-const ErrorNotSupportAcmsguru = "Not support acmsguru"
+const ErrorNotSupportAcmsguru = "not support acmsguru"
 
 func (info *Info) errorContest() (string, error) {
 	if info.ProblemType == "gym" {
@@ -151,7 +151,7 @@ func (info *Info) MySubmissionURL(host string) (string, error) {
 		}
 		return fmt.Sprintf(host+"/group/%v/contest/%v/my", info.GroupID, info.ContestID), nil
 	case "acmsguru":
-		return "", errors.New("Not support acmsguru")
+		return "", errors.New("not support acmsguru")
 	}
 	return "", errors.New(ErrorUnknownType)
 }
@@ -242,5 +242,5 @@ func (info *Info) OpenURL(host string) (string, error) {
 		}
 		return fmt.Sprintf(host+"/problemsets/acmsguru/problem/%v/%v", info.ContestID, info.ProblemID), nil
 	}
-	return "", errors.New("Hmmm I don't know what you want to do~")
+	return "", errors.New("hmmm I don't know what you want to do~")
 }

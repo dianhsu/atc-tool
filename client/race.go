@@ -18,7 +18,7 @@ func findCountdown(body []byte) (int, error) {
 	reg := regexp.MustCompile(`class=["']countdown["'][\s\S]*?(\d+):(\d+):(\d+)`)
 	tmp := reg.FindSubmatch(body)
 	if tmp == nil {
-		return 0, errors.New("Cannot find any countdown")
+		return 0, errors.New("cannot find any countdown")
 	}
 	h, _ := strconv.Atoi(string(tmp[1]))
 	m, _ := strconv.Atoi(string(tmp[2]))

@@ -153,7 +153,7 @@ func findCfOffset(body []byte) (string, error) {
 	reg := regexp.MustCompile(`name="utc_offset" content="([\s\S]+?)"`)
 	tmp := reg.FindSubmatch(body)
 	if tmp == nil {
-		return "", errors.New("Cannot find cf utc offset")
+		return "", errors.New("cannot find cf utc offset")
 	}
 	return string(tmp[1]), nil
 }
@@ -162,7 +162,7 @@ func findSubmission(body []byte, n int) ([][]byte, error) {
 	reg := regexp.MustCompile(`data-submission-id=['"]\d[\s\S]+?</tr>`)
 	tmp := reg.FindAll(body, n)
 	if tmp == nil {
-		return nil, errors.New("Cannot find any submission")
+		return nil, errors.New("cannot find any submission")
 	}
 	return tmp, nil
 }
@@ -269,7 +269,7 @@ func (c *Client) getSubmissions(URL string, n int) (submissions []Submission, er
 	}
 
 	if len(submissions) < 1 {
-		return nil, errors.New("Cannot find any submission")
+		return nil, errors.New("cannot find any submission")
 	}
 
 	return
@@ -301,7 +301,7 @@ func (c *Client) WatchSubmission(info Info, n int, line bool) (submissions []Sub
 		if endCount == len(submissions) {
 			return
 		}
-		sub := time.Now().Sub(st)
+		sub := time.Since(st)
 		if sub < time.Second {
 			time.Sleep(time.Duration(time.Second - sub))
 		}

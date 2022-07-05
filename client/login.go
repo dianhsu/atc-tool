@@ -46,7 +46,7 @@ func findCsrf(body []byte) (string, error) {
 	reg := regexp.MustCompile(`csrf='(.+?)'`)
 	tmp := reg.FindSubmatch(body)
 	if len(tmp) < 2 {
-		return "", errors.New("Cannot find csrf")
+		return "", errors.New("cannot find csrf")
 	}
 	return string(tmp[1]), nil
 }
@@ -130,7 +130,7 @@ func encrypt(handle, password string) (ret string, err error) {
 func decrypt(handle, password string) (ret string, err error) {
 	data, err := hex.DecodeString(password)
 	if err != nil {
-		err = errors.New("Cannot decode the password")
+		err = errors.New("cannot decode the password")
 		return
 	}
 	block, err := aes.NewCipher(createHash("glhf" + handle + "233"))
@@ -154,7 +154,7 @@ func decrypt(handle, password string) (ret string, err error) {
 // DecryptPassword get real password
 func (c *Client) DecryptPassword() (string, error) {
 	if len(c.Password) == 0 || len(c.HandleOrEmail) == 0 {
-		return "", errors.New("You have to configure your handle and password by `cf config`")
+		return "", errors.New("you have to configure your handle and password by `cf config`")
 	}
 	return decrypt(c.HandleOrEmail, c.Password)
 }

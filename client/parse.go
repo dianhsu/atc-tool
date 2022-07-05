@@ -24,7 +24,7 @@ func findSample(body []byte) (input [][]byte, output [][]byte, err error) {
 	a := irg.FindAllSubmatch(body, -1)
 	b := org.FindAllSubmatch(body, -1)
 	if a == nil || b == nil || len(a) != len(b) {
-		return nil, nil, fmt.Errorf("Cannot parse sample with input %v and output %v", len(a), len(b))
+		return nil, nil, fmt.Errorf("cannot parse sample with input %v and output %v", len(a), len(b))
 	}
 	newline := regexp.MustCompile(`<[\s/br]+?>`)
 	filter := func(src []byte) []byte {
