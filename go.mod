@@ -1,4 +1,4 @@
-module github.com/sempr/cf-tool
+module github.com/sempr/cf
 
 go 1.18
 
