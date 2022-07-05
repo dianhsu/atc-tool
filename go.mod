@@ -12,7 +12,6 @@ require (
 	github.com/sergi/go-diff v1.0.0
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/skratchdot/open-golang v0.0.0-20190402232053-79abb63cd66e
-	github.com/xalanq/cf-tool v1.0.0
 	golang.org/x/crypto v0.0.0-20190404164418-38d8ce5564a5
 )
 

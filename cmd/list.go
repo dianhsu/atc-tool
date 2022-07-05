@@ -9,7 +9,7 @@ import (
 	"github.com/fatih/color"
 	ansi "github.com/k0kubun/go-ansi"
 	"github.com/olekukonko/tablewriter"
-	"github.com/xalanq/cf-tool/client"
+	"github.com/sempr/cf/client"
 )
 
 // List command

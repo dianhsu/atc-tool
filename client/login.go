@@ -14,8 +14,8 @@ import (
 	"syscall"
 
 	"github.com/fatih/color"
-	"github.com/xalanq/cf-tool/cookiejar"
-	"github.com/xalanq/cf-tool/util"
+	"github.com/sempr/cf/cookiejar"
+	"github.com/sempr/cf/util"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
