@@ -149,22 +149,47 @@ func display(submissions []Submission, problemID string, first bool, maxWidth *i
 	}
 }
 
-func findCfOffset(body []byte) (string, error) {
-	reg := regexp.MustCompile(`name="utc_offset" content="([\s\S]+?)"`)
-	tmp := reg.FindSubmatch(body)
-	if tmp == nil {
-		return "", errors.New("cannot find cf utc offset")
+func findEndStatus(text string) bool {
+	if text == "WJ" {
+		return false
 	}
-	return string(tmp[1]), nil
+	if strings.Contains(text, "/") && !strings.Contains(text, " ") {
+		return false
+	}
+	return true
 }
 
-func findSubmission(body []byte, n int) ([][]byte, error) {
-	reg := regexp.MustCompile(`data-submission-id=['"]\d[\s\S]+?</tr>`)
-	tmp := reg.FindAll(body, n)
-	if tmp == nil {
-		return nil, errors.New("cannot find any submission")
+func findSubmission(body []byte, n int) (submissions []Submission, err error) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
+	if err != nil {
+		return nil, err
 	}
-	return tmp, nil
+	vv := doc.Find("tbody tr")
+
+	var sub Submission
+	for i := 0; i < vv.Size(); i++ {
+		z := vv.Eq(i).Children()
+		sidStr, _ := z.Eq(4).Attr("data-id")
+		sid, _ := strconv.ParseInt(sidStr, 10, 64)
+		sub.id = uint64(sid)
+		stText := strings.Trim(z.Eq(6).Text(), " ")
+		sub.end = findEndStatus(stText)
+		sub.status = stText
+		if z.Length() == 10 {
+			memStr := strings.Split(z.Eq(8).Text(), " ")[0]
+			mem, _ := strconv.ParseInt(memStr, 10, 64)
+			sub.memory = uint64(mem) * 1024
+			timeStr := strings.Split(z.Eq(7).Text(), " ")[0]
+			time_, _ := strconv.ParseInt(timeStr, 10, 64)
+			sub.time = uint64(time_)
+		}
+		sub.when = z.Eq(0).Text()
+		sub.name = z.Eq(1).Text()
+		sub.lang = z.Eq(3).Text()
+		submissions = append(submissions, sub)
+	}
+
+	return
 }
 
 // var ruTime = "DD.MM.YYYY HH:mm";
@@ -248,24 +273,10 @@ func (c *Client) getSubmissions(URL string, n int) (submissions []Submission, er
 		return
 	}
 
-	if _, err = findHandle(body); err != nil {
-		return
-	}
+	submissions, err = findSubmission(body, n)
 
-	cfOffset, err := findCfOffset(body)
 	if err != nil {
 		return
-	}
-
-	submissionsBody, err := findSubmission(body, n)
-	if err != nil {
-		return
-	}
-
-	for _, submissionBody := range submissionsBody {
-		if submission, err := parseSubmission(submissionBody, cfOffset); err == nil {
-			submissions = append(submissions, submission)
-		}
 	}
 
 	if len(submissions) < 1 {
@@ -277,10 +288,7 @@ func (c *Client) getSubmissions(URL string, n int) (submissions []Submission, er
 
 // WatchSubmission n is the number of submissions
 func (c *Client) WatchSubmission(info Info, n int, line bool) (submissions []Submission, err error) {
-	URL, err := info.MySubmissionURL(c.host)
-	if err != nil {
-		return
-	}
+	URL := fmt.Sprintf("%v/contests/%v/submissions/me", c.host, info.ContestID)
 
 	maxWidth := 0
 	first := true

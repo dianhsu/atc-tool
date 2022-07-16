@@ -128,13 +128,13 @@ func parseArgs(opts docopt.Opts) error {
 }
 
 // ProblemRegStr problem
-const ProblemRegStr = `\w`
+const ProblemRegStr = `[a-z]`
 
 // StrictProblemRegStr strict problem
 const StrictProblemRegStr = `[a-zA-Z]`
 
 // ContestRegStr contest
-const ContestRegStr = `a[br]c\d+`
+const ContestRegStr = `a[br]c\d{1,4}`
 
 // GroupRegStr group
 const GroupRegStr = `\w{10}`

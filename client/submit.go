@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
-	"strings"
 
 	"github.com/sempr/cf/util"
 
@@ -47,37 +46,36 @@ func (c *Client) Submit(info Info, langID, source string) (err error) {
 		return
 	}
 
-	body, err = util.PostBody(c.client, fmt.Sprintf("%v?csrf_token=%v", URL, csrf), url.Values{
-		"csrf_token":            {csrf},
-		"ftaa":                  {c.Ftaa},
-		"bfaa":                  {c.Bfaa},
-		"action":                {"submitSolutionFormSubmitted"},
-		"submittedProblemIndex": {info.ProblemID},
-		"programTypeId":         {langID},
-		"contestId":             {info.ContestID},
-		"source":                {source},
-		"tabSize":               {"4"},
-		"_tta":                  {"594"},
-		"sourceCodeConfirmed":   {"true"},
+	taskScreenName := fmt.Sprintf("%v_%v", info.ContestID, info.ProblemID)
+	fmt.Println(taskScreenName, URL)
+	_, err = util.PostBody(c.client, URL, url.Values{
+		"csrf_token":          {csrf},
+		"data.TaskScreenName": {taskScreenName},
+		"data.LanguageId":     {langID},
+		"sourceCode":          {source},
 	})
 	if err != nil {
 		return
 	}
 
-	errMsg, err := findErrorMessage(body)
-	if err == nil {
-		return errors.New(errMsg)
-	}
+	// errMsg, err := findErrorMessage(body)
+	// if err == nil {
+	// 	return errors.New(errMsg)
+	// }
 
-	msg, err := findMessage(body)
-	if err != nil {
-		return errors.New("Submit failed")
-	}
-	if !strings.Contains(msg, "submitted successfully") {
-		return errors.New(msg)
-	}
+	// msg, err := findMessage(body)
+	// if err != nil {
+	// 	return errors.New("Submit failed")
+	// }
+	// if !strings.Contains(msg, "submitted successfully") {
+	// 	return errors.New(msg)
+	// }
 
 	color.Green("Submitted")
+
+	// if err != nil {
+	// 	return errors.New("No submission Id")
+	// }
 
 	submissions, err := c.WatchSubmission(info, 1, true)
 	if err != nil {

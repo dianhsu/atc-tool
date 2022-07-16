@@ -121,16 +121,7 @@ func (info *Info) MySubmissionURL(host string) (string, error) {
 	}
 	switch info.ProblemType {
 	case "contest":
-		return fmt.Sprintf(host+"/contest/%v/my", info.ContestID), nil
-	case "gym":
-		return fmt.Sprintf(host+"/gym/%v/my", info.ContestID), nil
-	case "group":
-		if info.GroupID == "" {
-			return "", errors.New(ErrorNeedGroupID)
-		}
-		return fmt.Sprintf(host+"/group/%v/contest/%v/my", info.GroupID, info.ContestID), nil
-	case "acmsguru":
-		return "", errors.New("not support acmsguru")
+		return fmt.Sprintf(host+"/contests/%v/submissions/me", info.ContestID), nil
 	}
 	return "", errors.New(ErrorUnknownType)
 }
@@ -182,11 +173,7 @@ func (info *Info) StandingsURL(host string) (string, error) {
 
 // SubmitURL submit url
 func (info *Info) SubmitURL(host string) (string, error) {
-	URL, err := info.ProblemSetURL(host)
-	if err != nil {
-		return "", err
-	}
-	return URL + "/submit", nil
+	return fmt.Sprintf("%v/contests/%v/submit", host, info.ContestID), nil
 }
 
 // OpenURL open url
