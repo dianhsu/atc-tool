@@ -1,24 +1,13 @@
 package client
 
 import (
-	"errors"
 	"fmt"
 	"net/url"
-	"regexp"
 
 	"github.com/sempr/cf/util"
 
 	"github.com/fatih/color"
 )
-
-func findErrorMessage(body []byte) (string, error) {
-	reg := regexp.MustCompile(`error[a-zA-Z_\-\ ]*">(.*?)</span>`)
-	tmp := reg.FindSubmatch(body)
-	if tmp == nil {
-		return "", errors.New("cannot find error")
-	}
-	return string(tmp[1]), nil
-}
 
 // Submit submit (block while pending)
 func (c *Client) Submit(info Info, langID, source string) (err error) {

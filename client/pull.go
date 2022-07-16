@@ -1,7 +1,6 @@
 package client
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"html"
@@ -9,10 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strconv"
 	"strings"
 
-	"github.com/PuerkitoBio/goquery"
 	"github.com/sempr/cf/util"
 
 	"github.com/fatih/color"
@@ -35,19 +32,6 @@ func findMessage(body []byte) (string, error) {
 	// 	return string(tmp[1]), nil
 	// }
 	// return "", errors.New("cannot find any message")
-}
-
-func findSubmissionId(body []byte) (int, error) {
-	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
-	if err != nil {
-		return 0, err
-	}
-	s := doc.Find("tbody").Children().Eq(0)
-	if s == nil {
-		return 0, errors.New("no children")
-	}
-	sid, _ := s.Find(".submission-score").Attr("data-id")
-	return strconv.Atoi(sid)
 }
 
 // ErrorSkip error

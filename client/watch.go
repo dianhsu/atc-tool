@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -32,10 +31,6 @@ type Submission struct {
 	lang   string
 	when   string
 	end    bool
-}
-
-func isWait(verdict string) bool {
-	return verdict == "null" || verdict == "TESTING" || verdict == "SUBMITTED"
 }
 
 // ParseStatus with color
@@ -183,7 +178,7 @@ func findSubmission(body []byte, n int) (submissions []Submission, err error) {
 			time_, _ := strconv.ParseInt(timeStr, 10, 64)
 			sub.time = uint64(time_)
 		}
-		sub.when = z.Eq(0).Text()
+		sub.when = parseWhen(z.Eq(0).Text())
 		sub.name = z.Eq(1).Text()
 		sub.lang = z.Eq(3).Text()
 		submissions = append(submissions, sub)
@@ -192,79 +187,15 @@ func findSubmission(body []byte, n int) (submissions []Submission, err error) {
 	return
 }
 
-// var ruTime = "DD.MM.YYYY HH:mm";
-// var enTime = "MMM/DD/YYYY HH:mm";
-// https://github.com/go-shadow/moment/blob/master/moment_parser.go
-const ruTime = "02.01.2006 15:04 Z07:00"
-const enTime = "Jan/02/2006 15:04 Z07:00"
+const jpTime = "2006-01-02 15:04:05-0700"
 
-func parseWhen(raw, cfOffset string) string {
-	data := fmt.Sprintf("%v %v", raw, cfOffset)
-	tm, err := time.Parse(ruTime, data)
+func parseWhen(raw string) string {
+	data := raw
+	tm, err := time.Parse(jpTime, data)
 	if err != nil {
-		tm, _ = time.Parse(enTime, data)
+		return raw
 	}
-	return tm.In(time.Local).Format("2006-01-02 15:04")
-}
-
-func parseSubmission(body []byte, cfOffset string) (ret Submission, err error) {
-	data := fmt.Sprintf("<table><tr %v</table>", string(body))
-	doc, err := goquery.NewDocumentFromReader(strings.NewReader(data))
-	if err != nil {
-		return
-	}
-	get := func(sel string) string {
-		return strings.TrimSpace(doc.Find(sel).Text())
-	}
-	reg := regexp.MustCompile(`\d+`)
-	getInt := func(sel string) uint64 {
-		if tmp := reg.FindString(doc.Find(sel).Text()); tmp != "" {
-			t, _ := strconv.Atoi(tmp)
-			return uint64(t)
-		}
-		return 0
-	}
-	sub := doc.Find(".submissionVerdictWrapper")
-	end := false
-	if verdict, exist := sub.Attr("submissionverdict"); exist && !isWait(verdict) {
-		end = true
-	}
-	status, _ := sub.Html()
-	numReg := regexp.MustCompile(`\d+`)
-	fmtReg := regexp.MustCompile(`<span\sclass=["']?verdict-format-([\S^>]+?)["']?>`)
-	colReg := regexp.MustCompile(`<span\sclass=["']?verdict-([\S^>]+?)["']?>`)
-	tagReg := regexp.MustCompile(`<[\s\S]*?>`)
-	status = fmtReg.ReplaceAllString(status, "")
-	status = colReg.ReplaceAllString(status, `${c-$1}`)
-	status = tagReg.ReplaceAllString(status, "")
-	status = strings.TrimSpace(status)
-	when := get(".format-time")
-	if when != "" {
-		when = parseWhen(when, cfOffset)
-	} else {
-		when = strings.TrimSpace(doc.Find("td").First().Next().Text())
-	}
-	if status == "" {
-		status = "Unknown"
-	}
-	var num uint64
-	if s := numReg.FindString(status); s != "" {
-		n, _ := strconv.Atoi(s)
-		num = uint64(n)
-	}
-	return Submission{
-		id:     getInt(".id-cell"),
-		name:   get("td[data-problemId]"),
-		lang:   get("td:not([class])"),
-		status: status,
-		time:   getInt(".time-consumed-cell"),
-		memory: getInt(".memory-consumed-cell") * 1024,
-		when:   when,
-		passed: num,
-		judged: num,
-		points: num,
-		end:    end,
-	}, nil
+	return tm.In(time.Local).Format("2006-01-02 15:04:05")
 }
 
 func (c *Client) getSubmissions(URL string, n int) (submissions []Submission, err error) {
