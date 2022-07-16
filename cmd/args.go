@@ -105,18 +105,9 @@ func parseArgs(opts docopt.Opts) error {
 		}
 	}
 	if info.ProblemType == "" || info.ProblemType == "contest" {
-		if len(info.ContestID) < 6 {
-			info.ProblemType = "contest"
-		} else {
-			info.ProblemType = "gym"
-		}
+		info.ProblemType = "contest"
 	}
-	if info.ProblemType == "acmsguru" {
-		if info.ContestID != "99999" && info.ContestID != "" {
-			info.ProblemID = info.ContestID
-		}
-		info.ContestID = "99999"
-	}
+
 	root := cfg.FolderName["root"]
 	info.RootPath = filepath.Join(path, root)
 	for {
@@ -137,13 +128,13 @@ func parseArgs(opts docopt.Opts) error {
 }
 
 // ProblemRegStr problem
-const ProblemRegStr = `\w+`
+const ProblemRegStr = `\w`
 
 // StrictProblemRegStr strict problem
-const StrictProblemRegStr = `[a-zA-Z]+\d*`
+const StrictProblemRegStr = `[a-zA-Z]`
 
 // ContestRegStr contest
-const ContestRegStr = `\d+`
+const ContestRegStr = `a[br]c\d+`
 
 // GroupRegStr group
 const GroupRegStr = `\w{10}`

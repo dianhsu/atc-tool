@@ -10,9 +10,6 @@ import (
 // ProblemTypes problem types
 var ProblemTypes = [...]string{
 	"contest",
-	"gym",
-	"group",
-	"acmsguru",
 }
 
 // Info information
@@ -97,16 +94,7 @@ func (info *Info) ProblemSetURL(host string) (string, error) {
 	}
 	switch info.ProblemType {
 	case "contest":
-		return fmt.Sprintf(host+"/contest/%v", info.ContestID), nil
-	case "gym":
-		return fmt.Sprintf(host+"/gym/%v", info.ContestID), nil
-	case "group":
-		if info.GroupID == "" {
-			return "", errors.New(ErrorNeedGroupID)
-		}
-		return fmt.Sprintf(host+"/group/%v/contest/%v", info.GroupID, info.ContestID), nil
-	case "acmsguru":
-		return host + "/problemsets/acmsguru", nil
+		return fmt.Sprintf(host+"/contests/%v/tasks", info.ContestID), nil
 	}
 	return "", errors.New(ErrorUnknownType)
 }
@@ -121,16 +109,7 @@ func (info *Info) ProblemURL(host string) (string, error) {
 	}
 	switch info.ProblemType {
 	case "contest":
-		return fmt.Sprintf(host+"/contest/%v/problem/%v", info.ContestID, info.ProblemID), nil
-	case "gym":
-		return fmt.Sprintf(host+"/gym/%v/problem/%v", info.ContestID, info.ProblemID), nil
-	case "group":
-		if info.GroupID == "" {
-			return "", errors.New(ErrorNeedGroupID)
-		}
-		return fmt.Sprintf(host+"/group/%v/contest/%v/problem/%v", info.GroupID, info.ContestID, info.ProblemID), nil
-	case "acmsguru":
-		return fmt.Sprintf(host+"/problemsets/acmsguru/problem/%v/%v", info.ContestID, info.ProblemID), nil
+		return fmt.Sprintf(host+"/contests/%v/tasks/%v_%v", info.ContestID, info.ContestID, info.ProblemID), nil
 	}
 	return "", errors.New(ErrorUnknownType)
 }

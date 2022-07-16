@@ -3,14 +3,13 @@ package client
 import (
 	"bytes"
 	"fmt"
-	"html"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 	"sync"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/sempr/cf/util"
 
 	"github.com/k0kubun/go-ansi"
@@ -19,28 +18,29 @@ import (
 )
 
 func findSample(body []byte) (input [][]byte, output [][]byte, err error) {
-	irg := regexp.MustCompile(`class="input"[\s\S]*?<pre>([\s\S]*?)</pre>`)
-	org := regexp.MustCompile(`class="output"[\s\S]*?<pre>([\s\S]*?)</pre>`)
-	a := irg.FindAllSubmatch(body, -1)
-	b := org.FindAllSubmatch(body, -1)
-	if a == nil || b == nil || len(a) != len(b) {
-		return nil, nil, fmt.Errorf("cannot parse sample with input %v and output %v", len(a), len(b))
+
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
+	if err != nil {
+		return
 	}
-	newline := regexp.MustCompile(`<[\s/br]+?>`)
-	filter := func(src []byte) []byte {
-		src = newline.ReplaceAll(src, []byte("\n"))
-		s := html.UnescapeString(string(src))
-		return []byte(strings.TrimSpace(s) + "\n")
-	}
-	for i := 0; i < len(a); i++ {
-		input = append(input, filter(a[i][1]))
-		output = append(output, filter(b[i][1]))
-	}
+	doc.Find("section").Each(func(_ int, s *goquery.Selection) {
+		if !strings.Contains(s.Find("h3").Text(), "Sample") {
+			return
+		}
+		name := s.Find("h3").Text()
+		data := strings.Trim(s.Find("pre").Text(), "\n \t")
+		if strings.Contains(name, "Sample Input") {
+			input = append(input, []byte(data))
+		} else if strings.Contains(name, "Sample Output") {
+			output = append(output, []byte(data))
+		}
+	})
 	return
 }
 
 // ParseProblem parse problem to path. mu can be nil
 func (c *Client) ParseProblem(URL, path string, mu *sync.Mutex) (samples int, standardIO bool, err error) {
+	standardIO = true
 	body, err := util.GetBody(c.client, URL)
 	if err != nil {
 		return
@@ -54,11 +54,6 @@ func (c *Client) ParseProblem(URL, path string, mu *sync.Mutex) (samples int, st
 	input, output, err := findSample(body)
 	if err != nil {
 		return
-	}
-
-	standardIO = true
-	if !bytes.Contains(body, []byte(`<div class="input-file"><div class="property-title">input</div>standard input</div><div class="output-file"><div class="property-title">output</div>standard output</div>`)) {
-		standardIO = false
 	}
 
 	for i := 0; i < len(input); i++ {
@@ -121,6 +116,7 @@ func (c *Client) Parse(info Info) (problems []string, paths []string, err error)
 	for i, problemID := range problems {
 		paths[i] = filepath.Join(contestPath, strings.ToLower(problemID))
 		go func(problemID, path string) {
+			// func(problemID, path string) {
 			defer wg.Done()
 			mu.Lock()
 			fmt.Printf("Parsing %v\n", problemID)

@@ -50,7 +50,7 @@ func Init(path string) {
 		c.FolderName = map[string]string{}
 	}
 	if _, ok := c.FolderName["root"]; !ok {
-		c.FolderName["root"] = "cf"
+		c.FolderName["root"] = "atcoder"
 	}
 	for _, problemType := range client.ProblemTypes {
 		if _, ok := c.FolderName[problemType]; !ok {
