@@ -12,7 +12,7 @@ require (
 	github.com/sergi/go-diff v1.2.0
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
-	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d
+	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467
 )
 
 require (
@@ -28,5 +28,4 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	golang.org/x/net v0.0.0-20220630215102-69896b714898 // indirect
 	golang.org/x/sys v0.0.0-20220704084225-05e143d24a9e // indirect
-	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 )

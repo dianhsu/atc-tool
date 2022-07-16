@@ -16,7 +16,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/sempr/cf/cookiejar"
 	"github.com/sempr/cf/util"
-	"golang.org/x/crypto/ssh/terminal"
+	terminal "golang.org/x/term"
 )
 
 // genFtaa generate a random one
