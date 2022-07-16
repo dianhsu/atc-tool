@@ -19,22 +19,12 @@ import (
 	terminal "golang.org/x/term"
 )
 
-// genFtaa generate a random one
-func genFtaa() string {
-	return util.RandString(18)
-}
-
-// genBfaa generate a bfaa
-func genBfaa() string {
-	return "f1b3f18c715565b589b7823cda7448ce"
-}
-
 // ErrorNotLogged not logged in
 var ErrorNotLogged = "Not logged in"
 
 // findHandle if logged return (handle, nil), else return ("", ErrorNotLogged)
 func findHandle(body []byte) (string, error) {
-	reg := regexp.MustCompile(`handle = "([\s\S]+?)"`)
+	reg := regexp.MustCompile(`var userScreenName = "([\s\S]+?)";`) //  `var userScreenName = "([\s\S]+?)"`)
 	tmp := reg.FindSubmatch(body)
 	if len(tmp) < 2 {
 		return "", errors.New(ErrorNotLogged)
@@ -43,7 +33,7 @@ func findHandle(body []byte) (string, error) {
 }
 
 func findCsrf(body []byte) (string, error) {
-	reg := regexp.MustCompile(`csrf='(.+?)'`)
+	reg := regexp.MustCompile(`csrfToken = "(.+?)"`)
 	tmp := reg.FindSubmatch(body)
 	if len(tmp) < 2 {
 		return "", errors.New("cannot find csrf")
@@ -62,7 +52,7 @@ func (c *Client) Login() (err error) {
 
 	jar, _ := cookiejar.New(nil)
 	c.client.Jar = jar
-	body, err := util.GetBody(c.client, c.host+"/enter")
+	body, err := util.GetBody(c.client, c.host+"/login")
 	if err != nil {
 		return
 	}
@@ -72,18 +62,10 @@ func (c *Client) Login() (err error) {
 		return
 	}
 
-	ftaa := genFtaa()
-	bfaa := genBfaa()
-
-	body, err = util.PostBody(c.client, c.host+"/enter", url.Values{
-		"csrf_token":    {csrf},
-		"action":        {"enter"},
-		"ftaa":          {ftaa},
-		"bfaa":          {bfaa},
-		"handleOrEmail": {c.HandleOrEmail},
-		"password":      {password},
-		"_tta":          {"176"},
-		"remember":      {"on"},
+	body, err = util.PostBody(c.client, c.host+"/login", url.Values{
+		"csrf_token": {csrf},
+		"username":   {c.HandleOrEmail},
+		"password":   {password},
 	})
 	if err != nil {
 		return
@@ -94,8 +76,6 @@ func (c *Client) Login() (err error) {
 		return
 	}
 
-	c.Ftaa = ftaa
-	c.Bfaa = bfaa
 	c.Handle = handle
 	c.Jar = jar
 	color.Green("Succeed!!")

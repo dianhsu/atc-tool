@@ -38,10 +38,10 @@ func formatProxy(proxy string) (string, error) {
 func (c *Config) SetHost() (err error) {
 	host, err := formatHost(c.Host)
 	if err != nil {
-		host = "https://codeforces.com"
+		host = "https://atcoder.jp"
 	}
 	color.Green("Current host domain is %v", host)
-	color.Cyan(`Set a new host domain (e.g. "https://codeforces.com"`)
+	color.Cyan(`Set a new host domain (e.g. "https://atcoder.jp"`)
 	color.Cyan(`Note: Don't forget the "http://" or "https://"`)
 	for {
 		host, err = formatHost(util.ScanlineTrim())

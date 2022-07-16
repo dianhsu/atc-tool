@@ -16,8 +16,8 @@ import (
 )
 
 const version = "v1.0.0"
-const configPath = "~/.cf/config"
-const sessionPath = "~/.cf/session"
+const configPath = "~/.atcoder/config"
+const sessionPath = "~/.atcoder/session"
 
 func main() {
 	usage := `Codeforces Tool $%version%$ (cf). https://github.com/sempr/cf
@@ -49,9 +49,8 @@ Options:
   -f <file>, --file <file>, <file>
                        Path to file. E.g. "a.cpp", "./temp/a.cpp"
   <specifier>          Any useful text. E.g.
-                       "https://codeforces.com/contest/100",
-                       "https://codeforces.com/contest/180/problem/A",
-                       "https://codeforces.com/group/Cw4JRyRGXR/contest/269760"
+                       "https://atcoder.jp/contests/abc259",
+                       "https://atcoder.jp/contests/abc259/tasks/abc259_a",
                        "1111A", "1111", "a", "Cw4JRyRGXR"
                        You can combine multiple specifiers to specify what you
                        want.
@@ -62,7 +61,7 @@ Examples:
   cf config            Configure the cf-tool.
   cf submit            cf will detect what you want to submit automatically.
   cf submit -f a.cpp
-  cf submit https://codeforces.com/contest/100/A
+  cf submit https://atcoder.jp/contests/abc259/tasks/abc259_a
   cf submit -f a.cpp 100A 
   cf submit -f a.cpp 100 a
   cf submit contest 100 a

@@ -38,7 +38,7 @@ var Instance *Config
 
 // Init initialize
 func Init(path string) {
-	c := &Config{path: path, Host: "https://codeforces.com", Proxy: ""}
+	c := &Config{path: path, Host: "https://atcoder.jp", Proxy: ""}
 	if err := c.load(); err != nil {
 		color.Red(err.Error())
 		color.Green("Create a new configuration in %v", path)
