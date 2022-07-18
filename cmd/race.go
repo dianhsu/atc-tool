@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/sempr/cf/client"
@@ -20,12 +21,13 @@ func Race() (err error) {
 	if err != nil {
 		return
 	}
-	time.Sleep(1)
+	time.Sleep(time.Second)
 	URL, err := info.ProblemSetURL(cfg.Host)
 	if err != nil {
 		return
 	}
-	openURL(URL)
-	openURL(URL + "/problems")
+	fmt.Printf("Open ProblemSetURL %s\n", URL)
+	// openURL(URL)
+	// openURL(URL + "/problems")
 	return Parse()
 }
