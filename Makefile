@@ -1,4 +1,4 @@
-NAME=cf
+NAME=att
 BINDIR=bin
 GOBUILD=go build 
 
