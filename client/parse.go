@@ -10,7 +10,7 @@ import (
 	"sync"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/sempr/cf/util"
+	"github.com/dianhsu/atc/util"
 
 	"github.com/k0kubun/go-ansi"
 

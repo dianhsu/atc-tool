@@ -10,7 +10,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/sempr/cf/util"
+	"github.com/dianhsu/atc/util"
 
 	"github.com/fatih/color"
 )

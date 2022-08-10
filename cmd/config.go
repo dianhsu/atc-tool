@@ -1,11 +1,11 @@
 package cmd
 
 import (
+	"github.com/dianhsu/atc/client"
+	"github.com/dianhsu/atc/config"
+	"github.com/dianhsu/atc/util"
 	"github.com/fatih/color"
 	ansi "github.com/k0kubun/go-ansi"
-	"github.com/sempr/cf/client"
-	"github.com/sempr/cf/config"
-	"github.com/sempr/cf/util"
 )
 
 // Config command

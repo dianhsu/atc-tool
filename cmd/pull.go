@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/sempr/cf/client"
+	"github.com/dianhsu/atc/client"
 )
 
 // Pull command

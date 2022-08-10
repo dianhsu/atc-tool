@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/sempr/cf/util"
+	"github.com/dianhsu/atc/util"
 
 	"github.com/fatih/color"
 	ansi "github.com/k0kubun/go-ansi"

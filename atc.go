@@ -5,12 +5,12 @@ import (
 	"os"
 	"strings"
 
+	"github.com/dianhsu/atc/client"
+	"github.com/dianhsu/atc/cmd"
+	"github.com/dianhsu/atc/config"
 	"github.com/fatih/color"
 	ansi "github.com/k0kubun/go-ansi"
 	"github.com/mitchellh/go-homedir"
-	"github.com/sempr/cf/client"
-	"github.com/sempr/cf/cmd"
-	"github.com/sempr/cf/config"
 
 	docopt "github.com/docopt/docopt-go"
 )

@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/dianhsu/atc/cookiejar"
 	"github.com/fatih/color"
-	"github.com/sempr/cf/cookiejar"
 )
 
 // Client codeforces client

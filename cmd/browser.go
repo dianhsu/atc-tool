@@ -1,9 +1,9 @@
 package cmd
 
 import (
+	"github.com/dianhsu/atc/client"
+	"github.com/dianhsu/atc/config"
 	"github.com/fatih/color"
-	"github.com/sempr/cf/client"
-	"github.com/sempr/cf/config"
 	"github.com/skratchdot/open-golang/open"
 )
 

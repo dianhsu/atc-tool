@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/dianhsu/atc/util"
 	"github.com/fatih/color"
-	"github.com/sempr/cf/util"
 )
 
 type cloneData struct {

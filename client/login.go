@@ -13,9 +13,9 @@ import (
 	"regexp"
 	"syscall"
 
+	"github.com/dianhsu/atc/cookiejar"
+	"github.com/dianhsu/atc/util"
 	"github.com/fatih/color"
-	"github.com/sempr/cf/cookiejar"
-	"github.com/sempr/cf/util"
 	terminal "golang.org/x/term"
 )
 

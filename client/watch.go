@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sempr/cf/util"
+	"github.com/dianhsu/atc/util"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/fatih/color"

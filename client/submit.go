@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/sempr/cf/util"
+	"github.com/dianhsu/atc/util"
 
 	"github.com/fatih/color"
 )

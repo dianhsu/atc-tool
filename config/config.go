@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/dianhsu/atc/client"
 	"github.com/fatih/color"
-	"github.com/sempr/cf/client"
 )
 
 // CodeTemplate config parse code template

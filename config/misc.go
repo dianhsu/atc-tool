@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/dianhsu/atc/client"
+	"github.com/dianhsu/atc/util"
 	"github.com/fatih/color"
-	"github.com/sempr/cf/client"
-	"github.com/sempr/cf/util"
 )
 
 // SetGenAfterParse set it yes or no

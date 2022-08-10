@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sempr/cf/client"
-	"github.com/sempr/cf/config"
+	"github.com/dianhsu/atc/client"
+	"github.com/dianhsu/atc/config"
 )
 
 // Race command

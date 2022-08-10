@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/sempr/cf/client"
+	"github.com/dianhsu/atc/client"
 )
 
 // Watch command

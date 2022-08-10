@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"regexp"
 
+	"github.com/dianhsu/atc/client"
+	"github.com/dianhsu/atc/config"
 	"github.com/docopt/docopt-go"
-	"github.com/sempr/cf/client"
-	"github.com/sempr/cf/config"
 )
 
 // ParsedArgs parsed arguments

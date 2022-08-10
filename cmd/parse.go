@@ -4,8 +4,8 @@ import (
 	"errors"
 	"path/filepath"
 
-	"github.com/sempr/cf/client"
-	"github.com/sempr/cf/config"
+	"github.com/dianhsu/atc/client"
+	"github.com/dianhsu/atc/config"
 )
 
 // Parse command
