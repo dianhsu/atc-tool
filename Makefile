@@ -1,4 +1,4 @@
-NAME=att
+NAME=atc
 BINDIR=bin
 GOBUILD=go build 
 
