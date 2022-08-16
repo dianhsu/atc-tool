@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/dianhsu/atc/client"
 	"github.com/dianhsu/atc/config"
-	"github.com/docopt/docopt-go"
+	"github.com/docopt/docopt.go"
 	"os"
 	"path/filepath"
 )

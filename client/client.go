@@ -36,7 +36,12 @@ func (c *Client) load() (err error) {
 	if err != nil {
 		return
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+
+		}
+	}(file)
 	bytes, err := io.ReadAll(file)
 	if err != nil {
 		return err
@@ -46,11 +51,14 @@ func (c *Client) load() (err error) {
 func (c *Client) save() (err error) {
 	data, err := json.MarshalIndent(c, "", "  ")
 	if err == nil {
-		os.MkdirAll(filepath.Dir(c.path), os.ModePerm)
+		err := os.MkdirAll(filepath.Dir(c.path), os.ModePerm)
+		if err != nil {
+			return err
+		}
 		err = os.WriteFile(c.path, data, 0644)
 	}
 	if err != nil {
-		color.Red("Cannot save session to %v\n%v", c.path, err.Error())
+		color.Red("cannot save session to %v\n%v", c.path, err.Error())
 	}
 	return
 }

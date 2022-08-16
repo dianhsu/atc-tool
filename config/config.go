@@ -35,7 +35,7 @@ func Init(path string) {
 	c := &Config{path: path, Host: "https://atcoder.jp", Proxy: ""}
 	if err := c.load(); err != nil {
 		color.Red(err.Error())
-		color.Green("Create a new configuration in %v", path)
+		color.Green("create a new configuration in %v", path)
 	}
 	if c.Default < 0 || c.Default >= len(c.Template) {
 		c.Default = 0
@@ -46,6 +46,12 @@ func Init(path string) {
 	if _, ok := c.FolderName["root"]; !ok {
 		c.FolderName["root"] = "atc"
 	}
+	err := c.save()
+	if err != nil {
+		color.Red(err.Error())
+		color.Red("create a new configuration in %v, but failed", path)
+	}
+	Instance = c
 }
 
 func (c *Config) load() (err error) {
@@ -53,7 +59,11 @@ func (c *Config) load() (err error) {
 	if err != nil {
 		return
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+		}
+	}(file)
 
 	data, err := io.ReadAll(file)
 
@@ -68,11 +78,14 @@ func (c *Config) save() (err error) {
 	encoder := yaml.NewEncoder(&data)
 	err = encoder.Encode(c)
 	if err == nil {
-		os.MkdirAll(filepath.Dir(c.path), os.ModePerm)
+		err := os.MkdirAll(filepath.Dir(c.path), os.ModePerm)
+		if err != nil {
+			return err
+		}
 		err = os.WriteFile(c.path, data.Bytes(), 0644)
 	}
 	if err != nil {
-		color.Red("Cannot save config to %v\n%v", c.path, err.Error())
+		color.Red("cannot save config to %v\n%v", c.path, err.Error())
 	}
 	return
 }
