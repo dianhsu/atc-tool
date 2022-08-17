@@ -9,9 +9,9 @@ import (
 	"github.com/dianhsu/atc/client"
 	"github.com/dianhsu/atc/cmd"
 	"github.com/dianhsu/atc/config"
-	docopt "github.com/docopt/docopt.go"
+	"github.com/docopt/docopt.go"
 	"github.com/fatih/color"
-	ansi "github.com/k0kubun/go-ansi"
+	"github.com/k0kubun/go-ansi"
 )
 
 const version = "v1.0.0"

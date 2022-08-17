@@ -1,5 +1,3 @@
-github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815 h1:bWDMxwH3px2JBh6AyO7hdCn/PkvCZXii8TGj7sbtEbQ=
-github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815/go.mod h1:WwZ+bS3ebgob9U8Nd0kOddGdZWjyMGR8Wziv+TBNwSE=
 github.com/docopt/docopt.go v0.0.0-20180111231733-ee0de3bc6815 h1:HMAfwOa33y82IaQEKQDfUCiwNlxtM1iw7HLM9ru0RNc=
 github.com/docopt/docopt.go v0.0.0-20180111231733-ee0de3bc6815/go.mod h1:l7JNRynTRuqe45tpIyItHNqZWTxywYjp87MWTOnU5cg=
 github.com/fatih/color v1.13.0 h1:8LOYc1KYPPmyKMuN8QV2DNRWNbLo6LZ0iLs8+mlH53w=
