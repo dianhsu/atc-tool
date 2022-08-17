@@ -1,19 +1,20 @@
 package client
 
 import (
-	"encoding/json"
 	"github.com/fatih/color"
+	"gopkg.in/yaml.v3"
 	"io"
 	"net/http"
 	"net/http/cookiejar"
+	"net/url"
 	"os"
 	"path/filepath"
 )
 
 type Client struct {
-	Jar      *cookiejar.Jar `json:"cookies"`
-	Username string         `json:"username"`
-	Password string         `json:"password"`
+	Jar      *cookiejar.Jar `yaml:"cookies"`
+	Username string         `yaml:"username"`
+	Password string         `yaml:"password"`
 	host     string
 	proxy    string
 	path     string
@@ -29,6 +30,21 @@ func Init(path, host, proxy string) {
 		color.Red(err.Error())
 		color.Green("Create a new session in %v", path)
 	}
+	Proxy := http.ProxyFromEnvironment
+	if len(proxy) > 0 {
+		proxyURL, err := url.Parse(proxy)
+		if err != nil {
+			color.Red(err.Error())
+			color.Green("use default proxy from environment")
+		} else {
+			Proxy = http.ProxyURL(proxyURL)
+		}
+	}
+	c.client = &http.Client{Jar: c.Jar, Transport: &http.Transport{Proxy: Proxy}}
+	if err := c.save(); err != nil {
+		color.Red(err.Error())
+	}
+	Instance = c
 }
 
 func (c *Client) load() (err error) {
@@ -46,10 +62,10 @@ func (c *Client) load() (err error) {
 	if err != nil {
 		return err
 	}
-	return json.Unmarshal(bytes, c)
+	return yaml.Unmarshal(bytes, c)
 }
 func (c *Client) save() (err error) {
-	data, err := json.MarshalIndent(c, "", "  ")
+	data, err := yaml.Marshal(c)
 	if err == nil {
 		err := os.MkdirAll(filepath.Dir(c.path), os.ModePerm)
 		if err != nil {
