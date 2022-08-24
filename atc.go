@@ -15,6 +15,7 @@ import (
 )
 
 const version = "v1.0.0"
+const buildTime = ""
 const configPath = "~/.atc/config.yaml"
 const sessionPath = "~/.atc/session.yaml"
 
@@ -30,7 +31,7 @@ Options:
 `
 	color.Output = ansi.NewAnsiStdout()
 	usage = strings.Replace(usage, `$%version%$`, version, 1)
-	opts, _ := docopt.ParseArgs(usage, os.Args[1:], fmt.Sprintf("AtCoder Tool %v (atc)", version))
+	opts, _ := docopt.ParseArgs(usage, os.Args[1:], fmt.Sprintf("AtCoder Tool %v (atc)\nLast build: %v\n", version, buildTime))
 	opts[`{version}`] = version
 
 	cfgPath, _ := homedir.Expand(configPath)
